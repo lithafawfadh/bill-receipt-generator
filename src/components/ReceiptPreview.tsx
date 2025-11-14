@@ -249,8 +249,8 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
                 <tr key={index} className="border-b">
                   <td className="border border-gray-200 px-2 py-2 break-words overflow-hidden font-medium">{item.productName}</td>
                   <td className="border border-gray-200 px-2 py-2 text-center font-medium">{item.quantity}</td>
-                  <td className="border border-gray-200 px-2 py-2 text-right break-all font-medium">{formatLKR(item.unitPrice)}</td>
-                  <td className="border border-gray-200 px-2 py-2 text-right font-semibold break-all">{formatLKR(item.total)}</td>
+                  <td className="border border-gray-200 px-2 py-2 text-right font-medium whitespace-nowrap">{formatLKR(item.unitPrice)}</td>
+                  <td className="border border-gray-200 px-2 py-2 text-right font-semibold whitespace-nowrap">{formatLKR(item.total)}</td>
                 </tr>
               ))}
             </tbody>
@@ -263,33 +263,33 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
             <div className="bg-gray-50 p-3 rounded-lg">
               <div className="flex justify-between items-center text-sm mb-1 text-gray-900">
                 <span>Subtotal:</span>
-                <span>{formatLKR(invoice.subtotal)}</span>
+                <span className="whitespace-nowrap">{formatLKR(invoice.subtotal)}</span>
               </div>
               
               {invoice.shippingFee > 0 && (
                 <div className="flex justify-between items-center text-sm mb-1 text-blue-700 font-medium">
                   <span>Courier charge:</span>
-                  <span>+{formatLKR(invoice.shippingFee)}</span>
+                  <span className="whitespace-nowrap">+{formatLKR(invoice.shippingFee)}</span>
                 </div>
               )}
               
               {invoice.discount > 0 && (
                 <div className="flex justify-between items-center text-sm mb-1 text-red-700 font-medium">
                   <span>Discount:</span>
-                  <span>-{formatLKR(invoice.discount)}</span>
+                  <span className="whitespace-nowrap">-{formatLKR(invoice.discount)}</span>
                 </div>
               )}
               
               {invoice.pendingAmount > 0 && (
                 <div className="flex justify-between items-center text-sm mb-1 text-orange-700 font-medium">
                   <span>Pending Amount:</span>
-                  <span>+{formatLKR(invoice.pendingAmount)}</span>
+                  <span className="whitespace-nowrap">+{formatLKR(invoice.pendingAmount)}</span>
                 </div>
               )}
               
               <div className="flex justify-between items-center text-lg font-bold border-t-2 border-gray-900 pt-2 text-gray-900">
                 <span>Total:</span>
-                <span>{formatLKR(invoice.total)}</span>
+                <span className="whitespace-nowrap">{formatLKR(invoice.total)}</span>
               </div>
             </div>
           </div>
