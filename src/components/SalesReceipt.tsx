@@ -705,4 +705,270 @@ export const SalesReceipt: React.FC = () => {
                     }`}
                     placeholder="Qty"
                   />
-                  {errors.itemQuantity && <p className="text-re
+                  {errors.itemQuantity && <p className="text-red-500 text-xs mt-1">{errors.itemQuantity}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                    Price (LKR) <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={newItem.price}
+                    onChange={(e) => setNewItem({...newItem, price: e.target.value === '' ? '' : parseFloat(e.target.value) || ''})}
+                    className={`w-full px-3 py-2.5 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm ${
+                      errors.itemPrice ? 'border-red-500' : 'border-gray-300'
+                    }`}
+                    placeholder="Price"
+                  />
+                  {errors.itemPrice && <p className="text-red-500 text-xs mt-1">{errors.itemPrice}</p>}
+                </div>
+              </div>
+
+              {/* Total Preview */}
+              {typeof newItem.quantity === 'number' && newItem.quantity > 0 && typeof newItem.price === 'number' && newItem.price > 0 && (
+                <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium text-gray-700">Total:</span>
+                    <span className="text-lg font-bold text-emerald-700">
+                      {formatLKR(newItem.quantity * newItem.price)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                onClick={addNewItem}
+                disabled={showBulkAdd}
+                className="w-full bg-emerald-600 text-white px-4 py-2.5 rounded-lg hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2 font-medium"
+              >
+                <Plus className="h-4 w-4" />
+                <span>Add Item</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Items List */}
+      {saleItems.length > 0 && (
+        <div className="bg-white rounded-xl shadow-sm p-4 sm:p-5 border border-gray-200">
+          <div className="flex items-center space-x-2 mb-4">
+            <ShoppingCart className="h-5 w-5 text-emerald-600" />
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900">Items ({saleItems.length})</h2>
+          </div>
+          
+          {/* Mobile Card View */}
+          <div className="block sm:hidden space-y-3 mb-4 custom-scrollbar max-h-[400px] overflow-y-auto">
+            {saleItems.map((item) => (
+              <div key={item.productId} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                <div className="flex justify-between items-start mb-2">
+                  <h3 className="font-medium text-gray-900 text-sm flex-1 pr-2">{item.productName}</h3>
+                  <button
+                    onClick={() => removeSaleItem(item.productId)}
+                    className="text-red-600 hover:text-red-800 flex-shrink-0"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-2 text-sm mb-2">
+                  <div>
+                    <span className="text-gray-600">Price:</span>
+                    <p className="font-medium">{formatLKR(item.unitPrice)}</p>
+                  </div>
+                  <div>
+                    <span className="text-gray-600">Total:</span>
+                    <p className="font-semibold text-emerald-700">{formatLKR(item.total)}</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between bg-white rounded-md p-2 border border-gray-200">
+                  <span className="text-sm text-gray-600">Quantity:</span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => updateSaleItemQuantity(item.productId, item.quantity - 1)}
+                      className="text-red-600 hover:text-red-800 p-1"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </button>
+                    <span className="w-10 text-center font-semibold">{item.quantity}</span>
+                    <button
+                      onClick={() => updateSaleItemQuantity(item.productId, item.quantity + 1)}
+                      className="text-emerald-600 hover:text-emerald-800 p-1"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          {/* Desktop Table View */}
+          <div className="hidden sm:block overflow-x-auto mb-4">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-gray-200">
+                  <th className="text-left py-3 px-2 font-semibold text-gray-700">Product</th>
+                  <th className="text-center py-3 px-2 font-semibold text-gray-700">Qty</th>
+                  <th className="text-right py-3 px-2 font-semibold text-gray-700">Price</th>
+                  <th className="text-right py-3 px-2 font-semibold text-gray-700">Total</th>
+                  <th className="text-center py-3 px-2 font-semibold text-gray-700"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {saleItems.map((item) => (
+                  <tr key={item.productId} className="border-b border-gray-100 hover:bg-gray-50">
+                    <td className="py-3 px-2">{item.productName}</td>
+                    <td className="py-3 px-2 text-center">
+                      <div className="flex items-center justify-center space-x-1">
+                        <button
+                          onClick={() => updateSaleItemQuantity(item.productId, item.quantity - 1)}
+                          className="text-red-600 hover:text-red-800 p-1"
+                        >
+                          <Minus className="h-3 w-3" />
+                        </button>
+                        <span className="w-8 text-center font-medium">{item.quantity}</span>
+                        <button
+                          onClick={() => updateSaleItemQuantity(item.productId, item.quantity + 1)}
+                          className="text-emerald-600 hover:text-emerald-800 p-1"
+                        >
+                          <Plus className="h-3 w-3" />
+                        </button>
+                      </div>
+                    </td>
+                    <td className="py-3 px-2 text-right">{formatLKR(item.unitPrice)}</td>
+                    <td className="py-3 px-2 text-right font-semibold text-emerald-700">{formatLKR(item.total)}</td>
+                    <td className="py-3 px-2 text-center">
+                      <button
+                        onClick={() => removeSaleItem(item.productId)}
+                        className="text-red-600 hover:text-red-800 p-1"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Total Section */}
+          <div className="border-t-2 border-gray-200 pt-4">
+            <div className="space-y-3 mb-4">
+              {/* Subtotal */}
+              <div className="flex justify-between items-center text-base">
+                <span className="text-gray-700">Subtotal:</span>
+                <span className="font-semibold">{formatLKR(subtotal)}</span>
+              </div>
+              
+              {/* Courier charge input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Courier Charge
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={shippingFeeAmount}
+                  onChange={(e) => setShippingFeeAmount(e.target.value === '' ? '' : parseFloat(e.target.value) || '')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm ${
+                    errors.shippingFee ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter courier charge"
+                />
+                {errors.shippingFee && <p className="text-red-500 text-xs mt-1">{errors.shippingFee}</p>}
+              </div>
+              
+              {/* Discount input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Discount
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  max={subtotal}
+                  step="0.01"
+                  value={discountAmount}
+                  onChange={(e) => setDiscountAmount(e.target.value === '' ? '' : parseFloat(e.target.value) || '')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm ${
+                    errors.discount ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter discount amount"
+                />
+                {errors.discount && <p className="text-red-500 text-xs mt-1">{errors.discount}</p>}
+              </div>
+              
+              {/* Pending amount input */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Pending Amount
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={pendingAmount}
+                  onChange={(e) => setPendingAmount(e.target.value === '' ? '' : parseFloat(e.target.value) || '')}
+                  className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm ${
+                    errors.pendingAmount ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  placeholder="Enter pending amount"
+                />
+                {errors.pendingAmount && <p className="text-red-500 text-xs mt-1">{errors.pendingAmount}</p>}
+              </div>
+              
+              {/* Show applied amounts */}
+              {shippingFee > 0 && (
+                <div className="flex justify-between items-center text-sm text-blue-600">
+                  <span>Courier:</span>
+                  <span className="font-medium">+{formatLKR(shippingFee)}</span>
+                </div>
+              )}
+              
+              {discount > 0 && (
+                <div className="flex justify-between items-center text-sm text-red-600">
+                  <span>Discount:</span>
+                  <span className="font-medium">-{formatLKR(discount)}</span>
+                </div>
+              )}
+              
+              {pendingAmt > 0 && (
+                <div className="flex justify-between items-center text-sm text-orange-600">
+                  <span>Pending:</span>
+                  <span className="font-medium">+{formatLKR(pendingAmt)}</span>
+                </div>
+              )}
+              
+              {/* Final Total */}
+              <div className="flex justify-between items-center text-xl font-bold bg-emerald-50 p-3 rounded-lg border-2 border-emerald-200">
+                <span>Total:</span>
+                <span className="text-emerald-700">{formatLKR(finalTotal)}</span>
+              </div>
+            </div>
+
+            {errors.items && <p className="text-red-500 text-sm mb-3">{errors.items}</p>}
+
+            <button
+              onClick={generateReceipt}
+              disabled={isLoading}
+              className={`w-full px-6 py-3 rounded-lg transition-colors flex items-center justify-center space-x-2 text-white font-semibold text-base ${
+                editingInvoiceId 
+                  ? 'bg-orange-600 hover:bg-orange-700' 
+                  : 'bg-blue-600 hover:bg-blue-700'
+              } disabled:opacity-50 disabled:cursor-not-allowed`}
+            >
+              <Receipt className="h-5 w-5" />
+              <span>{editingInvoiceId ? 'Update Receipt' : 'Generate Receipt'}</span>
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
