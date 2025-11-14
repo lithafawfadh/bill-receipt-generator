@@ -208,9 +208,9 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
       {/* Receipt Content */}
       <div id="receipt-content" className="bg-white p-2 shadow-lg receipt w-screen -mx-1">
         {/* Header */}
-        <div className="text-center mb-4 pb-3 border-b-2 border-gray-300">
+        <div className="text-center mb-4 pb-3 border-b-2 border-gray-900">
           <h1 className="text-2xl font-bold text-gray-900 mb-1">KNS COSMETICS</h1>
-          <div className="text-gray-600 text-sm">
+          <div className="text-gray-800 text-sm">
             <p className="text-sm">Tel: 078 700 3268 | 075 700 3268</p>
           </div>
         </div>
@@ -219,7 +219,7 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           <div>
             <h3 className="text-base font-semibold text-gray-900 mb-2">Bill To:</h3>
-            <div className="text-gray-700">
+            <div className="text-gray-900">
               <p className="font-medium">{invoice.customer.name}</p>
             </div>
           </div>
@@ -228,7 +228,7 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
             <div className="mb-2">
               <h2 className="text-xl font-bold text-gray-900 mb-1">INVOICE</h2>
               <p className="text-base"><strong>#{invoice.invoiceNumber}</strong></p>
-              <p className="text-gray-600 text-sm">Date: {formatDate(invoice.date)}</p>
+              <p className="text-gray-800 text-sm">Date: {formatDate(invoice.date)}</p>
             </div>
           </div>
         </div>
@@ -247,10 +247,10 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
             <tbody>
               {invoice.items.map((item, index) => (
                 <tr key={index} className="border-b">
-                  <td className="border border-gray-200 px-2 py-2 break-words overflow-hidden">{item.productName}</td>
-                  <td className="border border-gray-200 px-2 py-2 text-center">{item.quantity}</td>
-                  <td className="border border-gray-200 px-2 py-2 text-right break-all">{formatLKR(item.unitPrice)}</td>
-                  <td className="border border-gray-200 px-2 py-2 text-right font-medium break-all">{formatLKR(item.total)}</td>
+                  <td className="border border-gray-200 px-2 py-2 break-words overflow-hidden font-medium">{item.productName}</td>
+                  <td className="border border-gray-200 px-2 py-2 text-center font-medium">{item.quantity}</td>
+                  <td className="border border-gray-200 px-2 py-2 text-right break-all font-medium">{formatLKR(item.unitPrice)}</td>
+                  <td className="border border-gray-200 px-2 py-2 text-right font-semibold break-all">{formatLKR(item.total)}</td>
                 </tr>
               ))}
             </tbody>
@@ -261,33 +261,33 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
         <div className="flex justify-end mb-6">
           <div className="w-full sm:w-3/4 md:w-1/2">
             <div className="bg-gray-50 p-3 rounded-lg">
-              <div className="flex justify-between items-center text-sm mb-1">
+              <div className="flex justify-between items-center text-sm mb-1 text-gray-900">
                 <span>Subtotal:</span>
                 <span>{formatLKR(invoice.subtotal)}</span>
               </div>
               
               {invoice.shippingFee > 0 && (
-                <div className="flex justify-between items-center text-sm mb-1 text-blue-600">
+                <div className="flex justify-between items-center text-sm mb-1 text-blue-700 font-medium">
                   <span>Courier charge:</span>
                   <span>+{formatLKR(invoice.shippingFee)}</span>
                 </div>
               )}
               
               {invoice.discount > 0 && (
-                <div className="flex justify-between items-center text-sm mb-1 text-red-600">
+                <div className="flex justify-between items-center text-sm mb-1 text-red-700 font-medium">
                   <span>Discount:</span>
                   <span>-{formatLKR(invoice.discount)}</span>
                 </div>
               )}
               
               {invoice.pendingAmount > 0 && (
-                <div className="flex justify-between items-center text-sm mb-1 text-orange-600">
+                <div className="flex justify-between items-center text-sm mb-1 text-orange-700 font-medium">
                   <span>Pending Amount:</span>
                   <span>+{formatLKR(invoice.pendingAmount)}</span>
                 </div>
               )}
               
-              <div className="flex justify-between items-center text-lg font-bold border-t-2 border-gray-300 pt-2">
+              <div className="flex justify-between items-center text-lg font-bold border-t-2 border-gray-900 pt-2 text-gray-900">
                 <span>Total:</span>
                 <span>{formatLKR(invoice.total)}</span>
               </div>
@@ -296,12 +296,12 @@ export const ReceiptPreview: React.FC<ReceiptPreviewProps> = ({ invoice, onBack 
         </div>
 
         {/* Footer */}
-        <div className="text-center text-gray-600 text-xs border-t pt-2">
-          <p className="mb-1">Thank you for your business!</p>
-          <p>This is a computer-generated invoice and does not require a signature.</p>
+        <div className="text-center text-gray-800 text-xs border-t border-gray-900 pt-2">
+          <p className="mb-1 font-medium">Thank you for your business!</p>
+          <p className="font-medium">This is a computer-generated invoice and does not require a signature.</p>
           
           {/* Bank & Branch Details */}
-          <div className="mt-2 text-gray-700 text-xs space-y-0.5">
+          <div className="mt-2 text-gray-900 text-xs space-y-0.5">
             <p className="font-bold">JM KULSHAN <span className="font-normal">(Branch Kalmunai)</span></p>
             <p className="font-bold">BOC BANK – <span className="font-bold">82344969</span></p>
             <p className="font-bold">COM BANK – <span className="font-bold">8012128811</span></p>
